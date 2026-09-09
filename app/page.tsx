@@ -1,69 +1,160 @@
-import Image from "next/image";
+"use strict";
+"use client"
+
+import { Sidebar } from "@/components/layout/sidebar"
+import { Progress } from "@/components/ui/progress"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Briefcase, CheckCircle2 } from "lucide-react"
+import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+
+// Data Tiruan Distribusi Stack
+const stackData = [
+  { name: "Next.js & React", value: 45, color: "#3f3f46" }, // zinc-700
+  { name: "Laravel & PHP", value: 25, color: "#ef4444" },   // red-500
+  { name: "Flutter & Dart", value: 20, color: "#3b82f6" },  // blue-500
+  { name: "PostgreSQL", value: 10, color: "#10b981" },      // emerald-500
+]
+
+// Data Tiruan Tren Kontribusi
+const commitData = [
+  { month: "Jan", commits: 45 },
+  { month: "Feb", commits: 80 },
+  { month: "Mar", commits: 65 },
+  { month: "Apr", commits: 110 },
+  { month: "Mei", commits: 90 },
+  { month: "Jun", commits: 155 },
+]
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+    <div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-950">
+      <Sidebar />
+
+      <main className="flex-1 p-8">
+        <div className="max-w-6xl mx-auto space-y-8">
+          
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Project Overview</h1>
+            <p className="text-muted-foreground">Pantau progres proyek dan alokasi waktumu bulan ini.</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            {/* KOLOM KIRI (Project Summary) */}
+            <Card className="col-span-1 bg-zinc-900 text-zinc-50 border-none shadow-lg flex flex-col">
+              <CardHeader className="pb-4">
+                <CardDescription className="text-zinc-400">Total Proyek Aktif</CardDescription>
+                <CardTitle className="text-5xl font-bold">12</CardTitle>
+              </CardHeader>
+              <CardContent className="flex-1 flex flex-col justify-between">
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-zinc-300">Target Penyelesaian (Q3)</span>
+                      <span className="font-medium text-white">75%</span>
+                    </div>
+                    <Progress value={75} className="h-2 bg-zinc-700" />
+                  </div>
+
+                  <div className="pt-4 border-t border-zinc-800 space-y-4">
+                    <div className="flex items-center gap-4">
+                      <div className="p-2 bg-zinc-800 rounded-full text-blue-400">
+                        <Briefcase size={16} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">Proyek Baru</p>
+                        <p className="text-xs text-zinc-400">Bulan ini</p>
+                      </div>
+                      <span className="font-semibold">+3</span>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                      <div className="p-2 bg-zinc-800 rounded-full text-emerald-400">
+                        <CheckCircle2 size={16} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">Selesai</p>
+                        <p className="text-xs text-zinc-400">Telah rilis</p>
+                      </div>
+                      <span className="font-semibold">8</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* KOLOM KANAN (Visualisasi Recharts) */}
+            <div className="col-span-1 lg:col-span-2 space-y-6 flex flex-col">
+              
+              {/* Donut Chart */}
+              <Card className="flex-1">
+                <CardHeader>
+                  <CardTitle>Distribusi Tech Stack</CardTitle>
+                  <CardDescription>Alokasi framework dalam proyek aktif</CardDescription>
+                </CardHeader>
+                <CardContent className="h-[250px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={stackData}
+                        innerRadius={60}
+                        outerRadius={80}
+                        paddingAngle={5}
+                        dataKey="value"
+                      >
+                        {stackData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip 
+                        contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              {/* Line Chart */}
+              <Card className="flex-1">
+                <CardHeader>
+                  <CardTitle>Tren Kontribusi (Commits)</CardTitle>
+                </CardHeader>
+                <CardContent className="h-[250px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={commitData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e4e4e7" />
+                      <XAxis 
+                        dataKey="month" 
+                        axisLine={false} 
+                        tickLine={false} 
+                        tick={{ fill: '#71717a', fontSize: 12 }} 
+                        dy={10}
+                      />
+                      <YAxis 
+                        axisLine={false} 
+                        tickLine={false} 
+                        tick={{ fill: '#71717a', fontSize: 12 }}
+                      />
+                      <Tooltip 
+                        contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="commits" 
+                        stroke="#18181b" 
+                        strokeWidth={3} 
+                        dot={{ r: 4, fill: "#18181b" }} 
+                        activeDot={{ r: 6 }} 
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+            </div>
+          </div>
         </div>
       </main>
     </div>
-  );
+  )
 }
