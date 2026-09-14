@@ -1,6 +1,8 @@
-"use strict";
 "use client"
 
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 import { Sidebar } from "@/components/layout/sidebar"
 import { Progress } from "@/components/ui/progress"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -9,10 +11,10 @@ import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tool
 
 // Data Tiruan Distribusi Stack
 const stackData = [
-  { name: "Next.js & React", value: 45, color: "#3f3f46" }, // zinc-700
-  { name: "Laravel & PHP", value: 25, color: "#ef4444" },   // red-500
-  { name: "Flutter & Dart", value: 20, color: "#3b82f6" },  // blue-500
-  { name: "PostgreSQL", value: 10, color: "#10b981" },      // emerald-500
+  { name: "Next.js & React", value: 45, color: "#3f3f46" },
+  { name: "Laravel & PHP", value: 25, color: "#ef4444" },
+  { name: "Flutter & Dart", value: 20, color: "#3b82f6" },
+  { name: "PostgreSQL", value: 10, color: "#10b981" },
 ]
 
 // Data Tiruan Tren Kontribusi
@@ -26,6 +28,30 @@ const commitData = [
 ]
 
 export default function Home() {
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) {
+        router.push("/login")
+      } else {
+        setLoading(false)
+      }
+    }
+
+    checkAuth()
+  }, [router])
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-zinc-950 text-zinc-400">
+        <p className="animate-pulse text-sm font-medium">Memverifikasi sesi...</p>
+      </div>
+    )
+  }
+
   return (
     <div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-950">
       <Sidebar />
